@@ -1,0 +1,9 @@
+.env
+node_modules
+Troubleshooting.md
+logs
+/bin
+.env.test
+core_be.md
+frontend.md
+core_be.md
