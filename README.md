@@ -1,8 +1,7 @@
-### Middle Backend README (Express - MongoDB)
 
-# Middle Backend - Student Support Portal
+## Middle Layer Backend - Student Support Portal
 
-This Node.js/Express service acts as the middle layer for ENY Consulting's Business Analysis School, handling general endpoints (leads, escalations, chat history), proxying AI requests to the Core Backend, and managing data storage in MongoDB. It supports real-time chat via Socket.io and caches responses in Redis.
+This Node.js/Express service acts as the middle layer backend for ENY Consulting's Business Analysis School, handling general endpoints (auth, users, leads, escalations, chat history), proxying AI requests to the Core Backend, and managing data storage in MongoDB. It supports real-time chat via Socket.io and caches responses in Redis.
 
 ---
 
