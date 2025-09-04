@@ -85,10 +85,6 @@
     }
   },
   "include": ["src/**/*"],
-<<<<<<< HEAD
-  "exclude": ["node_modules", "src/jest.config.ts", "test", "**/__test__/**", "**/*.test.ts"]
-=======
   "exclude": ["node_modules", "test", "src/jest.config.ts", "**/jest.config.ts", "**/__test__/**", "**/*.test.ts"]
->>>>>>> 21dea3bb6249de4533003760e32892c05134ff4d
 }
 
