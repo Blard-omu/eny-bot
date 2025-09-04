@@ -53,6 +53,56 @@ This service ensures seamless integration between the frontend and AI backend wh
 
 ---
 
+## System Architecture
+
+┌─────────────────────┐
+│   Frontend (Web)    │
+│  - BA School Portal │
+│  - Student Support  │
+└─────────▲───────────┘
+          │  HTTP/WS
+          │
+          ▼
+┌─────────────────────────────┐
+│    Middle Backend (Node.js) │
+│─────────────────────────────│
+│  - Express API              │
+│  - Socket.IO (Real-time)    │
+│  - Redis Cache              │
+│  - MongoDB Integration      │
+│  - AI Proxy Layer            │
+└───────────┬─────────────────┘
+            │
+            │ REST / WebSocket
+            │
+            ▼
+┌─────────────────────────────┐
+│       Core Backend (AI)     │
+│─────────────────────────────│
+│  - FastAPI (Python)         │
+│  - RAG Engine (Context)     │
+│  - DeepSeek LLM Integration │
+│  - Load Balancing & Fallback│
+└───────────┬─────────────────┘
+            │
+            │
+            ▼
+┌─────────────────────┐
+│    DeepSeek API     │
+│  - Chat v3.1        │
+│  - Free/Paid Tier   │
+└─────────────────────┘
+
+
+Additional Services:
+┌─────────────────────┐     ┌─────────────────────┐
+│      MongoDB        │     │       Redis         │
+│  - Leads            │     │  - AI Response Cache│
+│  - Escalations      │     │  - Session Storage  │
+│  - Chat History     │     └─────────────────────┘
+└─────────────────────┘
+
+
 ## Getting Started
 
 ### Prerequisites

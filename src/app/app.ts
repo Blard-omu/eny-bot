@@ -25,8 +25,10 @@ const allowedOrigins = [
   "http://localhost:4000",
    "http://localhost:5173",
   "https://eny-chat.vercel.app",
-  "https://backend.eny-chat.com", // Core AI backend baseURl
+  "https://backend.eny-chat.com",
   "https://eny-chat.onrender.com",
+  "http://localhost:8000",
+  "http://0.0.0.0:8000",
 ];
 
 app.use(
