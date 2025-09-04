@@ -1,4 +1,3 @@
-// src/utils/redis.ts
 import { createClient } from "redis";
 import logger from "../logger";
 

@@ -1,7 +1,6 @@
-// src/controllers/chatbot.controller.ts
 import { Request, Response, NextFunction } from "express";
 import { validationResult } from "express-validator";
-import ChatbotService from "../services/chatBot.service";
+import ChatbotService from "../services/chatbot.service";
 import logger from "../../utils/logger";
 import { formatValidationErrors } from "../../utils/helper";
 import { ValidationError } from "../middlewares";
@@ -9,18 +8,26 @@ import { ValidationError } from "../middlewares";
 class ChatbotController {
   /**
    * Proxy chat to AI Core Backend
+   * Automatically saves history and escalates if confidence is low
    */
-  static async chat(req: Request, res: Response, next: NextFunction) {
+  static async chat(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const result = validationResult(req);
       if (!result.isEmpty()) {
         throw new ValidationError(formatValidationErrors(result.array()));
       }
 
-      const { query } = req.body;
+      const { message } = req.body;
       const userId = (req as any).user?.id || "guest";
+      const userEmail = (req as any).user?.email || "guest";
 
-      const aiResponse = await ChatbotService.proxyChat(userId, query);
+      // ✅ For guests, pass along chat_history from frontend
+      // ✅ For logged-in users, service will fetch from DB
+      const aiResponse = await ChatbotService.createChat(
+        userId,
+        message,
+        userEmail,
+      );      
 
       res.status(200).json({
         status: "success",
@@ -33,36 +40,18 @@ class ChatbotController {
   }
 
   /**
-   * Save chat history
-   */
-  static async saveChatHistory(req: Request, res: Response, next: NextFunction) {
-    try {
-      const result = validationResult(req);
-      if (!result.isEmpty()) {
-        throw new ValidationError(formatValidationErrors(result.array()));
-      }
-
-      const { query, response, confidence } = req.body;
-      const userId = (req as any).user?.id;
-
-      await ChatbotService.saveChatHistory(userId, query, response, confidence);
-
-      res.status(201).json({
-        status: "success",
-        message: "Chat history saved",
-      });
-    } catch (err: any) {
-      logger.error(`❌ Save chat history error: ${err.message}`);
-      return next(err);
-    }
-  }
-
-  /**
    * Get chat history
    */
-  static async getChatHistory(req: Request, res: Response, next: NextFunction) {
+  static async getChatHistory(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const userId = (req as any).user?.id;
+      if (!userId || userId === "guest") {
+        res.status(200).json({
+          status: "success",
+          data: [],
+          message: "Guest users do not have stored history",
+        });
+      }
 
       const history = await ChatbotService.getChatHistory(userId);
 
@@ -77,25 +66,26 @@ class ChatbotController {
   }
 
   /**
-   * Escalate query
+   * Clear chat history
    */
-  static async escalate(req: Request, res: Response, next: NextFunction) {
+  static async clearChatHistory(req: Request, res: Response, next: NextFunction) {
     try {
-      const result = validationResult(req);
-      if (!result.isEmpty()) {
-        throw new ValidationError(formatValidationErrors(result.array()));
+      const userId = (req as any).user?.id;
+      if (!userId || userId === "guest") {
+        return res.status(400).json({
+          status: "fail",
+          message: "Guests cannot clear history",
+        });
       }
 
-      const { query, userEmail } = req.body;
-      const escalation = await ChatbotService.escalateQuery(query, userEmail);
+      await ChatbotService.clearChatHistory(userId);
 
-      res.status(201).json({
+      res.status(200).json({
         status: "success",
-        message: "Query escalated",
-        data: escalation,
+        message: "Chat history cleared",
       });
     } catch (err: any) {
-      logger.error(`❌ Escalation error: ${err.message}`);
+      logger.error(`❌ Clear chat history error: ${err.message}`);
       return next(err);
     }
   }
@@ -106,17 +96,24 @@ class ChatbotController {
   static async getAllEscalations(req: Request, res: Response, next: NextFunction) {
     try {
       const { page = 1, limit = 10 } = req.query;
-      const escalations = await ChatbotService.getAllEscalations(Number(page), Number(limit));
-      res.status(200).json(escalations);
+      const escalations = await ChatbotService.getAllEscalations(
+        Number(page),
+        Number(limit)
+      );
+      res.status(200).json({
+        status: "success",
+        data: escalations,
+      });
     } catch (error) {
-      next(error);
+      logger.error(`❌ Get escalations error: ${(error as any).message}`);
+      return next(error);
     }
   }
 
   /**
    * Save lead
    */
-  static async saveLead(req: Request, res: Response, next: NextFunction) {
+  static async createLead(req: Request, res: Response, next: NextFunction) {
     try {
       const result = validationResult(req);
       if (!result.isEmpty()) {
@@ -136,6 +133,28 @@ class ChatbotController {
       return next(err);
     }
   }
+
+  /**
+   * Assign lead to a marketer
+   */
+  static async assignLead(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { leadId, userId } = req.body; // userId = marketer
+
+      const lead = await ChatbotService.assignLead(leadId, userId);
+
+      res.status(200).json({
+        status: "success",
+        message: "Lead assigned successfully",
+        data: lead,
+      });
+    } catch (err: any) {
+      logger.error(`❌ Assign lead error: ${err.message}`);
+      return next(err);
+    }
+  }
 }
 
 export default ChatbotController;
+
+

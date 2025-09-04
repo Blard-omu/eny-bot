@@ -1,20 +1,19 @@
-// src/config/swagger.ts
 export const swaggerOptions = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "ENY Consulting – Student Support ChatBot API",
+      title: "ENY CHATBOT – Student Support ChatBot API",
       version: "1.0.0",
       description:
         "API documentation for the Middle Backend of ENY Consulting's Student Support Portal. This service acts as a bridge between the frontend and AI Core Backend, managing chat, escalations, leads, and chat history.",
     },
     servers: [
       {
-        url: "https://middle-backend.onrender.com/api",
+        url: "https://eny-bot.onrender.com/api/v1",
         description: "Live Server",
       },
       {
-        url: "http://localhost:5000/api",
+        url: "http://localhost:5000/api/v1",
         description: "Local Development Server",
       },
     ],
@@ -45,6 +44,11 @@ export const swaggerOptions = {
             _id: { type: "string" },
             email: { type: "string", example: "lead@example.com" },
             query: { type: "string", example: "Interested in CBAP enrollment" },
+            status: { 
+              type: "string", 
+              enum: ["new", "assigned", "in_progress", "closed"], 
+              default: "new" 
+            },
             createdAt: { type: "string", format: "date-time" },
           },
         },

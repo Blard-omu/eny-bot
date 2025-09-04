@@ -84,7 +84,7 @@ Create `.env`:
 PORT=5000
 MONGODB_URI=mongodb://localhost:27017/student-portal
 JWT_SECRET=your_super_secret_key
-AI_BACKEND_URL=http://localhost:8001/api
+AI_BACKEND_URL=http://localhost:8000/api
 REDIS_URL=redis://localhost:6379
 ```
 
@@ -197,15 +197,6 @@ npm test
 URL: https://middle-backend.onrender.com/api
 
 ---
-
-## Notes
-
-* **Role**: Bridges Frontend and AI Core; manages persistence.
-* **Scalability**: MongoDB’s schema-less design supports flexible data growth.
-* **Loom Video**: [Insert link] – Shows endpoint usage and chat history.
-
----
-
 ## Author
 
 Built by BLARD OMU for ENY Consulting Technical Assessment.

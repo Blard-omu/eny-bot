@@ -1,4 +1,3 @@
-
 import express, { Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
@@ -7,7 +6,7 @@ import { NotFoundError, methodNotAllowed } from "./middlewares";
 import { CONFIG } from "../configs";
 import AuthRouter from "./routes/auth.router";
 import UserRouter from "../app/routes/user.routes";
-import ChatRouter from "../app/routes/chatBot.routes";
+import ChatRouter from "../app/routes/chatbot.routes";
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsdoc from 'swagger-jsdoc';
 import { swaggerOptions } from '../configs/swagger.config';

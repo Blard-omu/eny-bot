@@ -36,9 +36,11 @@ class AuthService {
 
       logger.info(`✅ User registered: ${email}`);
       return {
-        username,
-        phone,
-        email,
+        user: {
+          username,
+          phone,
+          email,
+        },
         token
       };
     } catch (error: any) {
@@ -67,6 +69,7 @@ class AuthService {
           username: user.username,
           phone: user.phone,
           email: user.email,
+          role: user.role,
         },
         token,
       };

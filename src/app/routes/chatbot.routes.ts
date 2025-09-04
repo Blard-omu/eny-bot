@@ -4,9 +4,7 @@ import { isLoggedIn, checkAdmin } from "../middlewares/auth";
 import { methodNotAllowed } from "../middlewares";
 import {
   chatValidator,
-  escalateValidator,
   leadValidator,
-  saveChatHistoryValidator,
 } from "../middlewares/validations/chat";
 
 const router = express.Router();
@@ -14,7 +12,7 @@ const router = express.Router();
 /**
  * @swagger
  * tags:
- *   name: Chatbot
+ *   name: Chats
  *   description: AI Chatbot, Lead Management, and Escalation endpoints
  */
 
@@ -50,40 +48,6 @@ router
 
 /**
  * @swagger
- * /escalate:
- *   post:
- *     summary: Escalate a query to human support
- *     description: Escalates low-confidence queries for manual handling by human support.
- *     tags: [Chatbot]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - query
- *               - userEmail
- *             properties:
- *               query:
- *                 type: string
- *                 example: How do I enroll in CBAP?
- *               userEmail:
- *                 type: string
- *                 example: user@example.com
- *     responses:
- *       201:
- *         description: Query escalated successfully
- *       400:
- *         $ref: '#/components/responses/ValidationError'
- */
-router
-  .route("/escalate")
-  .post(escalateValidator, ChatbotController.escalate)
-  .all(methodNotAllowed);
-
-/**
- * @swagger
  * /leads:
  *   post:
  *     summary: Capture lead information
@@ -113,15 +77,15 @@ router
  */
 router
   .route("/leads")
-  .post(leadValidator, ChatbotController.saveLead)
+  .post(leadValidator, ChatbotController.createLead)
   .all(methodNotAllowed);
 
 /**
  * @swagger
- * /chat-history:
+ * /leads/assign:
  *   post:
- *     summary: Save user chat history
- *     description: Stores a chat interaction (query, response, confidence) for logged-in users.
+ *     summary: Assign a lead to a marketing/sales team member
+ *     description: Admins can assign a captured lead to a marketing or sales team member for follow-up.
  *     tags: [Chatbot]
  *     security:
  *       - bearerAuth: []
@@ -132,31 +96,39 @@ router
  *           schema:
  *             type: object
  *             required:
- *               - query
- *               - response
- *               - confidence
+ *               - leadId
+ *               - userId
  *             properties:
- *               query:
+ *               leadId:
  *                 type: string
- *               response:
+ *                 example: 64a8e2fba9c12345bcdf6789
+ *               userId:
  *                 type: string
- *               confidence:
- *                 type: number
- *                 example: 0.92
+ *                 example: 42b29ac-7736-40e6-ba09-9ba1509bbc99
  *     responses:
- *       201:
- *         description: Chat history stored successfully
+ *       200:
+ *         description: Lead assigned successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Lead'
+ *       400:
+ *         $ref: '#/components/responses/ValidationError'
  *       401:
  *         $ref: '#/components/responses/UnauthorizedError'
+ *       403:
+ *         description: Forbidden – admin access required
+ *       404:
+ *         $ref: '#/components/responses/NotFoundError'
  */
 router
-  .route("/chat-history")
-  .post(isLoggedIn, saveChatHistoryValidator, ChatbotController.saveChatHistory)
+  .route("/leads/assign")
+  .post(isLoggedIn, checkAdmin, ChatbotController.assignLead)
   .all(methodNotAllowed);
 
 /**
  * @swagger
- * /chat-history:
+ * /history:
  *   get:
  *     summary: Retrieve chat history
  *     description: Fetches all chat interactions for the logged-in user.
@@ -170,13 +142,13 @@ router
  *         $ref: '#/components/responses/UnauthorizedError'
  */
 router
-  .route("/chat-history")
+  .route("/history")
   .get(isLoggedIn, ChatbotController.getChatHistory)
   .all(methodNotAllowed);
 
 /**
  * @swagger
- * /admin/escalations:
+ * /escalations:
  *   get:
  *     summary: Retrieve all escalated queries (Admin only)
  *     description: Fetches all escalations for admin review.
@@ -190,7 +162,7 @@ router
  *         description: Forbidden – admin access required
  */
 router
-  .route("/admin/escalations")
+  .route("/escalations")
   .get(isLoggedIn, checkAdmin, ChatbotController.getAllEscalations)
   .all(methodNotAllowed);
 

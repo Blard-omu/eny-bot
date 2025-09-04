@@ -1,11 +1,24 @@
 import { body } from "express-validator";
 
 export const chatValidator = [
-  body("query")
+  body("message")
     .notEmpty()
-    .withMessage("Query is required")
+    .withMessage("Message is required")
     .isString()
-    .withMessage("Query must be a string"),
+    .withMessage("Message must be a string"),
+
+  body("chat_history")
+    .optional()
+    .isArray()
+    .withMessage("Chat history must be an array"),
+  body("chat_history.*.content")
+    .optional()
+    .isString()
+    .withMessage("Each chat history entry must have string content"),
+  body("chat_history.*.role")
+    .optional()
+    .isIn(["user", "assistant"])
+    .withMessage("Each chat history role must be either 'user' or 'assistant'"),
 ];
 
 export const saveChatHistoryValidator = [

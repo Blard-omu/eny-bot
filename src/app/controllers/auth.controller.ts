@@ -26,8 +26,8 @@ class AuthController {
 
       res.status(201).json({
         status: "success",
-        message: "Registration successful. Please verify your email to activate your account.",
-        user,
+        message: "Registration successful.",
+        user
       });
     } catch (err: any) {
       // logger.error(`❌ Register error: ${err.message}`);
