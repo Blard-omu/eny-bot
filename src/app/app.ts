@@ -24,11 +24,9 @@ const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:4000",
    "http://localhost:5173",
-  "https://eny-chat.vercel.app",
-  "https://backend.eny-chat.com",
-  "https://eny-chat.onrender.com",
-  "http://localhost:8000",
-  "http://0.0.0.0:8000",
+  "https://eny-bot-fe.vercel.app",
+  "https://enychotbot-core-chat.com", 
+  "https://enychatbot-middle.onrender.com",
 ];
 
 app.use(
