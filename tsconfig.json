@@ -85,6 +85,6 @@
     }
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "test", "**/__test__/**", "**/*.test.ts"]
+  "exclude": ["node_modules", "test", "src/jest.config.ts", "**/jest.config.ts", "**/__test__/**", "**/*.test.ts"]
 }
 
