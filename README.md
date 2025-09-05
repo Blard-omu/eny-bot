@@ -55,6 +55,7 @@ This service ensures seamless integration between the frontend and AI backend wh
 
 ## System Architecture
 
+```
 ┌─────────────────────┐
 │   Frontend (Web)    │
 │  - BA School Portal │
@@ -101,7 +102,7 @@ Additional Services:
 │  - Escalations      │     │  - Session Storage  │
 │  - Chat History     │     └─────────────────────┘
 └─────────────────────┘
-
+```
 
 ## Getting Started
 
