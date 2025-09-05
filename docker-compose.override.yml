@@ -1,8 +1,6 @@
-version: "3.8"
-
 services:
   node-backend:
     volumes:
-      - .:/usr/src/app         # mount source code
+      - .:/usr/src/app    
       - /usr/src/app/node_modules # keep container node_modules intact
     command: ["npm", "run", "dev"] # run dev mode (nodemon/hot reload)
