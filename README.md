@@ -5,6 +5,21 @@ This Node.js/Express service acts as the middle layer backend for ENY Consulting
 
 ---
 
+<p align="center">
+  <img src="https://res.cloudinary.com/djkrhjgjd/image/upload/v1757062593/chatbot/mermaid-diagram_2_e17jeb.svg" alt="Logo" width="100%" />
+</p>
+
+---
+
+<img 
+  src="https://res.cloudinary.com/djkrhjgjd/image/upload/v1757062248/chatbot/mermaid-diagram_5_p6v6uc.svg" 
+  alt="Chatbot core"
+  style="width: 100%; height: auto;"
+/>
+
+---
+
+
 ## Overview
 
 The Middle Backend:
