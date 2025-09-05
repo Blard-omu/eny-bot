@@ -52,7 +52,7 @@ app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // ✅ Example API Route (Only GET Allowed)
 app
-  .route("/api/v1")
+  .route("/")
   .get((req, res) => {
     res.json({
       message: CONFIG.WELCOME.MESSAGE,
