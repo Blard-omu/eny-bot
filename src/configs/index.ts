@@ -5,9 +5,9 @@ dotenv.config();
 
 const CONFIG: Config = Object.freeze({
   WELCOME: {
-    MESSAGE: `API BaseUrl:  https://eny-bot.onrender.com/api/v1`,
+    MESSAGE: `API BaseUrl:  https://enychatbot-middle.onrender.com/api/v1`,
     PORT: Number(process.env.APPLICATION_PORT) || 4000,
-    SWAGGER_DOC: process.env.SWAGGER_URL || "",
+    SWAGGER_DOC: process.env.SWAGGER_URL || "https://enychatbot-middle.onrender.com",
   },
 
   APPLICATION: {
