@@ -24,6 +24,7 @@ const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:4000",
   "http://localhost:8000",
+  "http://192.168.100.161:8000"
    "http://localhost:5173",
   "https://eny-bot-fe.vercel.app",
   "https://enychotbot-core-chat.com", 
