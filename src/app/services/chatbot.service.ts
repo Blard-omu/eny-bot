@@ -10,7 +10,7 @@ import {
 } from "../middlewares";
 import { getCache, setCache, deleteCache } from "../../utils/helper/redis";
 
-const AI_BACKEND_URL = `${process.env.AI_BACKEND_URL}/api/v1` || "";
+const AI_BACKEND_URL = `${process.env.AI_BACKEND_URL}/api/v1` || "http://192.168.100.161:8000";
 const CHAT_CACHE_TTL = parseInt(process.env.CHAT_CACHE_TTL || "300", 10);
 const ESCALATION_CONFIDENCE_THRESHOLD = parseFloat(
   process.env.ESCALATION_CONFIDENCE_THRESHOLD || "0.5"
